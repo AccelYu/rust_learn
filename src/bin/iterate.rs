@@ -18,7 +18,7 @@ fn main() {
         i.push_str("!");
     }
     println!("{:?}", a1);
-    println!();
+
     let a2 = [0, 1];
     for &i in a2.iter() {
         //&i模式匹配解构引用，i此时是个值
