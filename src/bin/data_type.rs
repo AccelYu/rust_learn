@@ -1,9 +1,9 @@
 use std::num::FpCategory::{Infinite, Nan};
 
 fn main() {
-    //scalar();
-    //compound();
-    str()
+    // scalar();
+    compound();
+    // str();
 }
 
 fn scalar() {
@@ -20,28 +20,29 @@ fn scalar() {
         a1.overflowing_add(126),
         a1.overflowing_add(127)
     ); //检测是否溢出
-    let a3:f64 = 3.4028236; //有符号
-    println!("{} {:?} {:?}", a3, Nan, Infinite);
+    let a3: f64 = 3.4028236; //有符号
+    let a4: usize = 3; //无符号，系统位数
+    println!("{} {} {:?} {:?}", a3, a4, Nan, Infinite);
 
-    let a4: usize = 3; //系统位数
-    let a5: u8 = b'a'; //一个字节
-    let a6 = true;
-    println!("{} {} {}", a4, a5, a6);
+    let a5: u8 = b'a'; //1字节
+    let a6 = 'a'; //4字节
+    let a7 = true; //为了对其内存，通常会被存储为1字节
+    println!("{} {} {}", a5, a6, a7);
 }
 
 fn compound() {
     let tup = (0, 'a', "ab", true);
     println!("{:?} {:?}", tup, tup.0);
 
-    let array=[0, 1, 2, 3, 4];  //数组中元素类型必须相同
-    println!("{:?} {:?}", array, array[0]);
+    let array = [0, 1, 2, 3, 4]; //数组中元素类型必须相同
+    println!("{:?} {:?} {:?}", array, array[0], &array[0..2]); //切片的本质是借用
 }
 
 fn str() {
     let mut s1 = String::from("Hello");
     s1.push_str(", ");
-    let s2 = "world!";//静态的，无法更改
-    let s3 = s1 + s2;//String类型中追加&str，反过来s2+s1则会报错。然后s1无法再被使用
+    let s2 = "world!"; //静态的，是一个指向某个字符串数据的引用
+    let s3 = s1 + s2; //s1的所有权转移到s3中，后续再使用s1会报错
     println!("{}", s3);
 
     let s4 = b"bytestream";
