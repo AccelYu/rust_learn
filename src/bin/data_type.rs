@@ -26,16 +26,33 @@ fn scalar() {
 
     let a5: u8 = b'a'; //1字节
     let a6 = 'a'; //4字节
-    let a7 = true; //为了对其内存，通常会被存储为1字节
+    let a7 = true; //为了对齐内存，通常会被存储为1字节
     println!("{} {} {}", a5, a6, a7);
 }
 
 fn compound() {
+    //固定长度，异构，分配在栈
     let tup = (0, 'a', "ab", true);
     println!("{:?} {:?}", tup, tup.0);
 
-    let array = [0, 1, 2, 3, 4]; //数组中元素类型必须相同
-    println!("{:?} {:?} {:?}", array, array[0], &array[0..2]); //切片的本质是借用
+    //固定长度，同构，分配在栈
+    let arr1 = [0, 1, 2, 3, 4];
+    println!("{:?} {:?}", arr1[0], &arr1[0..2]); //切片的本质是借用
+    let arr2 = ["arr"; 3]; //重复值初始化
+    println!("{:?}", arr2);
+
+    //动态长度，同构，分配在堆
+    let vec1 = vec![1, 2, 3]; //直接初始化
+    let vec2 = vec!["vec"; 3]; //重复值初始化
+    println!("{:?} {:?}", vec1, vec2);
+    let mut vec3 = Vec::new(); //构造函数
+    vec3.push(0);
+    let mut vec4 = Vec::with_capacity(5); //预分配容量，防止频繁扩容
+    vec4.push(0);
+    println!("{:?} {:?}", vec3, vec4);
+    let vec5 = (0..5).collect::<Vec<_>>(); //从迭代器收集
+    let vec6 = "hello".chars().collect::<Vec<_>>();
+    println!("{:?} {:?}", vec5, vec6);
 }
 
 fn str() {
